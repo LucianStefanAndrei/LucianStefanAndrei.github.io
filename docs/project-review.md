@@ -1,5 +1,7 @@
 # GitHub and CV review — 24 September 2026
 
+**Later update:** the user supplied and approved phone-free English and Romanian PDFs for the website. The cost discrepancy, website placeholder and displayed LinkedIn URLs below have been resolved in those versions. See [the current PDF review](cv-review.md) for remaining writing and formatting issues. The résumé-publication notes below describe the earlier state.
+
 Reviewed the eight public repositories through GitHub’s public API, available READMEs and file listings, plus the supplied Romanian and English CVs locally. This is a portfolio/content review, not an execution of those applications or a security audit. No résumé was uploaded or changed.
 
 ## Amnesia

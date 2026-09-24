@@ -8,7 +8,10 @@ export const profile = {
   linkedin: 'https://www.linkedin.com/in/andrei-lucian-stefan-813b8421b/',
   behance: 'https://www.behance.net/lucianstefanand',
   medium: 'https://medium.com/@stefanandreilucian2',
-  resume: null,
+  resume: {
+    en: 'assets/CV_Stefan_Lucian_En.pdf',
+    ro: 'assets/CV_Stefan_Lucian_Ro.pdf',
+  },
   // Set to your final public origin, e.g. https://your-domain.com (no trailing slash).
   siteUrl: process.env.SITE_URL || '',
 };
@@ -38,7 +41,7 @@ export const copy = {
     carousel: 'carousel', designBrowse: 'Design work — swipe or use the arrow keys to browse', previousDesign: 'Previous design', nextDesign: 'Next design',
     title: 'Ștefan Andrei Lucian — Robotics & AI Engineer',
     description: 'Robotics, applied AI and hardware–software integration. Explore the engineering portfolio of Ștefan Andrei Lucian, based in Cluj-Napoca, Romania.',
-    skip: 'Skip to content', work: 'Work', about: 'About', contact: 'Contact', resume: 'Résumé', resumeLabel: 'Download résumé (PDF, Romanian)', menu: 'Menu', close: 'Close', location: 'CLUJ-NAPOCA, ROMANIA', discipline: 'ROBOTICS × AI × SOFTWARE DEVELOPER × WEB DESIGN',
+    skip: 'Skip to content', work: 'Work', about: 'About', contact: 'Contact', resume: 'Résumé', resumeLabel: 'Download résumé (PDF, English)', menu: 'Menu', close: 'Close', location: 'CLUJ-NAPOCA, ROMANIA', discipline: 'ROBOTICS × AI × SOFTWARE DEVELOPER × WEB DESIGN',
     heroName: ['ȘTEFAN', 'ANDREI', 'LUCIAN.'], role: 'Robotics Engineer. AI Engineer.',
     intro: 'I connect software with the physical world. A robotics graduate building autonomous systems, applied AI and the things that bring them together.',
     viewWork: 'View my work', getInTouch: 'Get in touch', figure: 'FIG. 01 — MÖBIUS BAND', figureSide: 'ONE SURFACE / ONE EDGE', pauseMotion: 'Pause animation', playMotion: 'Resume animation', scroll: 'SCROLL TO EXPLORE', availability: 'Open to junior engineering opportunities',
@@ -66,7 +69,7 @@ export const copy = {
     ],
     processLabel: '03 / HOW I WORK', processTitle: 'THINK. MAKE.<br>MAKE IT BETTER.', processIntro: 'A practical approach.<br>From the right question to a working system.',
     steps: [['Discover', 'Understand the problem, the people and the real-world constraints.'], ['Design', 'Map the system. Choose the tools. Give every part a purpose.'], ['Build', 'Prototype, write code and bring hardware and software together.'], ['Refine', 'Test, debug and document. Improve what the system teaches us.']],
-    contactLabel: '04 / WHAT’S NEXT?', contactTitle: 'LET’S BUILD<br>SOMETHING<br><span>GREAT.</span>', contactIntro: 'Have a project in mind or a place on your team?<br>Let’s start a conversation.', emailLabel: 'DROP ME A LINE', footerNote: 'Built with purpose. Made to move.', backTop: 'Back to top', resumeNote: 'PDF · Romanian',
+    contactLabel: '04 / WHAT’S NEXT?', contactTitle: 'LET’S BUILD<br>SOMETHING<br><span>GREAT.</span>', contactIntro: 'Have a project in mind or a place on your team?<br>Let’s start a conversation.', emailLabel: 'DROP ME A LINE', footerNote: 'Built with purpose. Made to move.', backTop: 'Back to top', resumeNote: 'PDF · English',
   },
   ro: {
     home: 'Acasă', projectUnit: 'PROIECTE', showMore: 'Vezi mai multe proiecte', showLess: 'Vezi mai puține proiecte', modelPreview: 'PREVIZUALIZARE MODEL 3D', videoPreview: 'PREVIZUALIZARE VIDEO',

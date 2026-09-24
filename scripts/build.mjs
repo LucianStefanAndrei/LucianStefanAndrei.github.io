@@ -1,4 +1,4 @@
-import { mkdir,writeFile,cp,rm,rmdir,readFile } from 'node:fs/promises';
+import { mkdir,writeFile,cp,rm,rmdir,readFile,readdir } from 'node:fs/promises';
 import path from 'node:path';
 import { profile } from '../content/site.mjs';
 import { catalog,designWorks } from '../content/catalog.mjs';
@@ -47,12 +47,16 @@ for(const [route,html] of pages){
   await mkdir(path.dirname(target),{recursive:true});await writeFile(target,html);
 }
 // Original documents and unpublished résumés are never part of the static output.
+const approvedResumes=new Set(Object.values(profile.resume||{}).filter(Boolean).map(file=>path.resolve(file)));
+const isResume=file=>/^(cv[_-]|resume).*\.pdf$/i.test(path.basename(file));
 await cp('assets','dist/assets',{recursive:true,filter:source=>{
   if(/\.(step|stp|odt)$/i.test(source))return false;
-  const isResume=/^(cv[_-]|resume).*\.pdf$/i.test(path.basename(source));
-  return !isResume||source.replaceAll(path.sep,'/')===profile.resume;
+  return !isResume(source)||approvedResumes.has(path.resolve(source));
 }});
-if(!profile.resume)await rm('dist/assets/CV_Stefan_Lucian_Ro.pdf',{force:true});
+// Remove a previously published résumé when it is removed from the approved map.
+for(const file of await readdir('dist/assets')){
+  if(isResume(file)&&!approvedResumes.has(path.resolve('assets',file)))await rm(path.join('dist/assets',file),{force:true});
+}
 await mkdir('.tmp',{recursive:true});await writeFile(manifestFile,JSON.stringify([...pages.keys()]));
 if(profile.siteUrl){
   const origin=profile.siteUrl.replace(/\/$/,'');

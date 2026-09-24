@@ -19,6 +19,7 @@ export const socialLinks = () => [['GitHub', profile.github], ['LinkedIn', profi
 
 export function layout({ lang, route, title, description, body, alternates, home = false, scripts = [], article = false }) {
   const t = copy[lang], base = rootPath(route);
+  const resume = profile.resume?.[lang];
   const homeHref = home ? '' : `${base}${prefix(lang)}index.html`;
   const origin = profile.siteUrl.replace(/\/$/, '');
   const canonical = `${origin}/${route.replace(/index\.html$/, '')}`;
@@ -44,7 +45,7 @@ export function layout({ lang, route, title, description, body, alternates, home
     <a class="brand" href="${homeHref || '#top'}" aria-label="${esc(profile.name)}">${identity}<span>ȘTEFAN<span class="brand-second"> ANDREI LUCIAN</span></span></a>
     <div class="nav-portrait"><img src="${asset('portrait.jpg')}" alt="${esc(profile.name)}" width="320" height="320" decoding="async"></div>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navigation" data-open="${t.menu}" data-close="${t.close}" hidden><span>${t.menu}</span><i aria-hidden="true"></i></button>
-    <nav id="navigation" aria-label="${lang === 'en' ? 'Main navigation' : 'Navigație principală'}"><a class="nav-link nav-home" href="${homeHref}#top"${home?' aria-current="page"':''}>${t.home}</a><a class="nav-link" href="${homeHref}#about">${t.about}</a><a class="nav-link" href="${base}${prefix(lang)}projects/index.html">${sections[lang].projects}</a><a class="nav-link" href="${base}${prefix(lang)}web-design/index.html">${sections[lang].design}</a><a class="nav-link" href="${base}${blogRoute(lang)}"${route.includes('/blog/') || route.startsWith('blog/') ? ' aria-current="page"' : ''}>${t.blog}</a><a class="nav-link" href="${homeHref}#contact">${t.contact}</a>${profile.resume?`<a class="nav-resume" href="${base}${profile.resume}" download aria-label="${t.resumeLabel}">${t.resume} <span aria-hidden="true">↓</span></a>`:''}
+    <nav id="navigation" aria-label="${lang === 'en' ? 'Main navigation' : 'Navigație principală'}"><a class="nav-link nav-home" href="${homeHref}#top"${home?' aria-current="page"':''}>${t.home}</a><a class="nav-link" href="${homeHref}#about">${t.about}</a><a class="nav-link" href="${base}${prefix(lang)}projects/index.html">${sections[lang].projects}</a><a class="nav-link" href="${base}${prefix(lang)}web-design/index.html">${sections[lang].design}</a><a class="nav-link" href="${base}${blogRoute(lang)}"${route.includes('/blog/') || route.startsWith('blog/') ? ' aria-current="page"' : ''}>${t.blog}</a><a class="nav-link" href="${homeHref}#contact">${t.contact}</a>${resume?`<a class="nav-resume" href="${base}${resume}" download aria-label="${t.resumeLabel}">${t.resume} <span aria-hidden="true">↓</span></a>`:''}
       <div class="language-switch" aria-label="${lang === 'en' ? 'Language' : 'Limbă'}">${['en','ro'].map((language, i) => `${i ? '<span aria-hidden="true">/</span>' : ''}<a lang="${language}" hreflang="${language}" href="${base}${alternates[language] || blogRoute(language)}" ${lang === language ? 'aria-current="page"' : ''} aria-label="${language === 'en' ? 'English' : 'Română'}">${language.toUpperCase()}</a>`).join('')}</div>
     </nav>
   </div></header>

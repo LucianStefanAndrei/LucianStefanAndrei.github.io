@@ -386,7 +386,7 @@ test('no-JavaScript content, project navigation and galleries remain usable', as
   await page.close();
 });
 
-test('reduced motion disables introductions, and résumé remains unpublished', async () => {
+test('reduced motion disables introductions', async () => {
   const page = await browser.newPage({ reducedMotion: 'reduce' });
   await page.goto(url);
   const frame = await page.locator('.mobius-ascii').textContent();
@@ -394,9 +394,34 @@ test('reduced motion disables introductions, and résumé remains unpublished', 
   assert.equal(await page.locator('.mobius-ascii').textContent(), frame);
   assert.equal(await page.locator('.hero-art .motion-toggle').isVisible(), false);
   assert.equal(await page.locator('.reveal-pending').count(), 0);
-  assert.equal(await page.locator('.nav-resume, .resume-link').count(), 0);
-  assert.equal((await page.request.get(`${url}/assets/CV_Stefan_Lucian_Ro.pdf`)).status(), 404);
-  await assert.rejects(readFile('dist/assets/CV_Stefan_Lucian_Ro.pdf'), { code: 'ENOENT' });
+  await page.close();
+});
+
+test('résumé links download the approved PDF for the current language', async () => {
+  const page = await browser.newPage({ reducedMotion: 'reduce' });
+  for (const [lang, filename] of [['', 'CV_Stefan_Lucian_En.pdf'], ['ro/', 'CV_Stefan_Lucian_Ro.pdf']]) {
+    const original = await readFile(`assets/${filename}`);
+    const published = await readFile(`dist/assets/${filename}`);
+    assert.equal(published.subarray(0, 5).toString(), '%PDF-');
+    assert.deepEqual(published, original);
+    for (const route of ['', 'projects/amnesia/']) {
+      await page.goto(`${url}/${lang}${route}`);
+      const link = page.locator('.nav-resume');
+      assert.equal(await link.count(), 1);
+      const href = await link.getAttribute('href');
+      assert.equal(new URL(href, page.url()).pathname, `/assets/${filename}`);
+      assert.equal((await page.request.get(new URL(href, page.url()).href)).status(), 200);
+      if (!route) {
+        const contact = page.locator('.resume-link');
+        assert.equal(await contact.getAttribute('href'), href);
+        const downloadPromise = page.waitForEvent('download');
+        await contact.click();
+        const download = await downloadPromise;
+        assert.equal(download.suggestedFilename(), filename);
+        assert.equal(await download.failure(), null);
+      }
+    }
+  }
   await page.close();
 });
 

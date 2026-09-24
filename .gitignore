@@ -3,12 +3,14 @@ node_modules/
 test-results/
 dist/
 
-# Résumés stay local until the portfolio URL has been added and publication approved.
+# Keep drafts private; these two final PDFs are approved for the portfolio.
 .private/
 CV_*.pdf
 CV_*.odt
 resume*.pdf
 resume*.odt
+!/assets/CV_Stefan_Lucian_En.pdf
+!/assets/CV_Stefan_Lucian_Ro.pdf
 
 # Local source CAD and uncompressed videos. Prepared website media is tracked.
 /public/projects/

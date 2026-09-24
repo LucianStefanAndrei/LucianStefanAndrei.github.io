@@ -70,7 +70,7 @@ The included workflow, `.github/workflows/deploy-pages.yml`, builds the website 
 | Layout and appearance | `assets/styles.css`, `assets/pages.css`, `scripts/home.mjs`, `scripts/layout.mjs`, `scripts/pages.mjs` |
 | Gallery and 3D interactions | `assets/media.js` |
 | Portrait | Replace `assets/portrait.jpg` |
-| Résumé (currently unpublished) | Keep it local until the portfolio URL is added. When ready, place the approved PDF in `assets/`, set `profile.resume` in `content/site.mjs`, and add an exception for that exact file to `.gitignore`. |
+| Résumés | Replace the approved phone-free `assets/CV_Stefan_Lucian_En.pdf` and `assets/CV_Stefan_Lucian_Ro.pdf`. Language-specific links use `profile.resume.en` and `profile.resume.ro` in `content/site.mjs`. Both filenames already have Git exceptions. |
 | Articles | `public/posts/<date-slug>/index.md` and its related images/audio |
 | Design images | `public/web_design/`, plus the `designWorks` list in `content/catalog.mjs` |
 
