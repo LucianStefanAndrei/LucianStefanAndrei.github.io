@@ -1,0 +1,73 @@
+node_modules/
+.tmp/
+test-results/
+dist/
+
+# Résumés stay local until the portfolio URL has been added and publication approved.
+.private/
+CV_*.pdf
+CV_*.odt
+resume*.pdf
+resume*.odt
+
+# Local source CAD and uncompressed videos. Prepared website media is tracked.
+/public/projects/
+*.step
+*.stp
+
+# Generated pages and copies of assets; the deployment workflow rebuilds them.
+/index.html
+/ro/
+/projects/
+/web-design/
+/blog/
+/assets/media/design/
+/assets/media/posts/
+/assets/media/projects/*/wireframe.glb
+
+# Local credentials and operating-system files.
+.env
+.env.*
+!.env.example
+Thumbs.db
+.DS_Store
+
+# Credentials, private keys, authentication caches and local tooling state.
+.npmrc
+.pypirc
+.netrc
+_netrc
+.git-credentials
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+id_rsa
+id_ed25519
+credentials.json
+service-account*.json
+client_secret*.json
+secrets.*
+.secrets/
+secrets/
+*.kdbx
+.aws/
+.azure/
+.config/gcloud/
+.ssh/
+.codex/
+.agents/
+.vscode/
+.idea/
+
+# Local logs, crash dumps and editor backups.
+*.log
+npm-debug.log*
+*.dmp
+*.stackdump
+*.swp
+*.swo
+*~
+coverage/
+playwright-report/

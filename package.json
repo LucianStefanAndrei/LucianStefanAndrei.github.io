@@ -1,0 +1,20 @@
+{
+  "name": "stefan-lucian-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "prepare:media": "node scripts/prepare-media.mjs",
+    "prepare:posters": "node scripts/model-posters.mjs",
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "test": "node --test tests/site.test.mjs"
+  },
+  "devDependencies": {
+    "axe-core": "4.13.0",
+    "marked": "18.0.14",
+    "occt-import-js": "0.0.23",
+    "playwright-core": "1.63.0"
+  }
+}

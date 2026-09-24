@@ -1,0 +1,102 @@
+import { amnesia } from './amnesia.mjs';
+// Edit personal information and translations here, then run `npm run build`.
+// Project links remain null until an exact destination is supplied.
+export const profile = {
+  name: 'Ștefan Andrei Lucian',
+  email: 'stefanandreilucian2@gmail.com',
+  github: 'https://github.com/LucianStefanAndrei',
+  linkedin: 'https://www.linkedin.com/in/andrei-lucian-stefan-813b8421b/',
+  behance: 'https://www.behance.net/lucianstefanand',
+  medium: 'https://medium.com/@stefanandreilucian2',
+  resume: null,
+  // Set to your final public origin, e.g. https://your-domain.com (no trailing slash).
+  siteUrl: process.env.SITE_URL || '',
+};
+
+export const projects = [
+  {
+    id: 'museum-robot', image: 'robot.svg', tags: ['ROS2', 'Python', 'NVIDIA Jetson', 'SLAM / Nav2'], url: null,
+    en: { category: 'Robotics / Bachelor’s thesis', name: 'Autonomous Museum Guide', date: '2025 — 2026', description: 'An anthropomorphic museum guide bringing autonomous navigation and multilingual conversational AI into one physical system.', problem: 'Combine movement, perception and natural conversation in a museum guide robot.', contribution: 'Designed and built the robot, integrating a modular 3D-printed structure, ROS2, LiDAR navigation, a PySide6 interface and speech–LLM–speech interaction.', outcome: 'A working thesis prototype with an approximately 1.3 m structure. A video demonstration is referenced on LinkedIn in the CV.', alt: 'Conceptual line illustration of a humanoid robot with a sensor head and wheeled base.' },
+    ro: { category: 'Robotică / Lucrare de licență', name: 'Ghid autonom de muzeu', date: '2025 — 2026', description: 'Un ghid antropomorf de muzeu care reunește navigația autonomă și inteligența artificială conversațională multilingvă.', problem: 'Integrarea mișcării, percepției și conversației naturale într-un robot ghid de muzeu.', contribution: 'Am proiectat și construit robotul, integrând structura modulară imprimată 3D, ROS2, navigația LiDAR, interfața PySide6 și interacțiunea voce–LLM–voce.', outcome: 'Un prototip funcțional pentru licență, cu o structură de aproximativ 1,3 m. CV-ul menționează o demonstrație video pe LinkedIn.', alt: 'Ilustrație conceptuală a unui robot umanoid cu senzori în cap și bază mobilă pe roți.' },
+  },
+  amnesia,
+  {
+    id: 'robodk', image: 'robodk.svg', tags: ['RoboDK', 'Robotics', 'Simulation'], url: null,
+    en: { category: 'Robotics / Simulation', name: 'Robotic Gear Manufacturing', date: 'ENGINEERING PROJECT', description: 'A robotized gear manufacturing process modeled and simulated in RoboDK.', problem: 'Represent a robotic manufacturing process for gears in a simulation environment.', contribution: 'Created a simulation of the robotized process using RoboDK.', outcome: 'A simulated manufacturing process for exploring the robotic workflow.', alt: 'Conceptual technical illustration of an industrial robot arm beside a gear.' },
+    ro: { category: 'Robotică / Simulare', name: 'Fabricație robotizată de roți dințate', date: 'PROIECT INGINERESC', description: 'Un proces de fabricație robotizat pentru roți dințate, modelat și simulat în RoboDK.', problem: 'Reprezentarea unui proces robotizat de fabricație a roților dințate într-un mediu de simulare.', contribution: 'Am realizat simularea procesului robotizat folosind RoboDK.', outcome: 'Un proces de fabricație simulat pentru explorarea fluxului robotic.', alt: 'Ilustrație tehnică conceptuală a unui braț robotic industrial lângă o roată dințată.' },
+  },
+  {
+    id: 'gearbox', image: 'gearbox.svg', tags: ['Mechanical design', 'CAD', 'Technical drawing'], url: null,
+    en: { category: 'Mechanical engineering', name: 'Worm Gearbox Design', date: 'ENGINEERING PROJECT', description: 'A mechanical design study supported by technical drawings, a technical report and engineering calculations.', problem: 'Develop and document the mechanical design of a worm gearbox.', contribution: 'Produced technical drawings, a technical report and a calculation report.', outcome: 'A documented mechanical design supported by engineering calculations.', alt: 'Conceptual technical drawing of a worm gearbox with a shaft and gear.' },
+    ro: { category: 'Inginerie mecanică', name: 'Proiectarea unui reductor melcat', date: 'PROIECT INGINERESC', description: 'Un proiect mecanic susținut de desene tehnice, raport tehnic și calcule inginerești.', problem: 'Dezvoltarea și documentarea proiectului mecanic al unui reductor melcat.', contribution: 'Am realizat desenele tehnice, raportul tehnic și raportul de calcul.', outcome: 'Un proiect mecanic documentat și susținut de calcule inginerești.', alt: 'Desen tehnic conceptual al unui reductor melcat, cu arbore și roată dințată.' },
+  },
+];
+
+export const copy = {
+  en: {
+    title: 'Ștefan Andrei Lucian — Robotics & AI Engineer',
+    description: 'Robotics, applied AI and hardware–software integration. Explore the engineering portfolio of Ștefan Andrei Lucian, based in Cluj-Napoca, Romania.',
+    skip: 'Skip to content', work: 'Work', about: 'About', contact: 'Contact', resume: 'Résumé', resumeLabel: 'Download résumé (PDF, Romanian)', menu: 'Menu', close: 'Close', location: 'CLUJ-NAPOCA, ROMANIA', discipline: 'ROBOTICS × AI × SOFTWARE DEVELOPER × WEB DESIGN',
+    heroName: ['ȘTEFAN', 'ANDREI', 'LUCIAN.'], role: 'Robotics Engineer. AI Engineer.',
+    intro: 'I connect software with the physical world. A robotics graduate building autonomous systems, applied AI and the things that bring them together.',
+    viewWork: 'View my work', getInTouch: 'Get in touch', figure: 'FIG. 01 — MÖBIUS BAND', figureSide: 'ONE SURFACE / ONE EDGE', pauseMotion: 'Pause animation', playMotion: 'Resume animation', scroll: 'SCROLL TO EXPLORE', availability: 'Open to junior engineering opportunities',
+    workLabel: '01 / SELECTED WORK', workTitle: 'IDEAS INTO<br>WORKING SYSTEMS.', workIntro: 'From autonomous robots to private AI.<br>A selection of things I’ve designed and built.', projectCount: '04 PROJECTS', details: 'Explore project', hideDetails: 'Project details', problem: 'The problem', contribution: 'My contribution', outcome: 'The outcome', projectLink: 'View project', linkPending: 'Project link not supplied.', illustration: 'CONCEPT ILLUSTRATION',
+    aboutLabel: '02', aboutTitle: 'ABOUT & EXPERTISE', aboutIntro: 'At home between<br>hardware and software.',
+    blog: 'Blog', blogTitle: 'NOTES & ARTICLES', blogIntro: 'Writing on robotics, AI, software and design.', blogEmpty: 'No articles published here yet.', blogEmptyBody: 'In the meantime, explore the projects behind the work.', readArticle: 'Read article', backBlog: 'All articles', backWork: 'All projects', nextProject: 'Next project', projectLabel: 'PROJECT', gallery: 'Gallery', video: 'Video', watchVideo: 'Watch video', model: 'Explore in 3D', downloadModel: 'Download 3D model', downloadStep: 'Download STEP file', modelHelp: 'Drag to rotate. Scroll or pinch to zoom.', modelError: 'The 3D preview could not be loaded. You can still download the model below.', technologies: 'Technologies', published: 'Published',
+    bio: 'I’m Ștefan, a Robotics Engineering graduate from the Technical University of Cluj-Napoca (2026). My background spans programming, electronics, mechanics and system integration.',
+    education: 'BEng / Robotics Engineering', university: 'Technical University of Cluj-Napoca', educationDate: '2022 — 2026',
+    aboutFigure: 'FIG. 02 — ICOSAHEDRON', featured: 'FEATURED / BACHELOR’S THESIS', socials: 'Social profiles',
+    skillGroups: [ ['Software & AI', ['Python', 'C++', 'SQL', 'LLM / RAG', 'React', 'MATLAB']], ['Robotics & embedded', ['ROS2 Humble', 'NVIDIA Jetson', 'ESP32', 'Teensy', 'Linux', 'Git']], ['Mechanical & automation', ['SolidWorks', 'Fusion 360', 'CATIA V5', 'TIA Portal', 'RoboDK', '3D printing']] ],
+    highlightsLabel: 'MILESTONES & RECOGNITION', pauseHighlights: 'Pause milestones', playHighlights: 'Resume milestones',
+    highlights: [
+      ['Robotics Engineering', 'Graduate · UTCN · 2026'],
+      ['Autonomous museum guide', 'Designed & built · Bachelor’s thesis · 2025–2026'],
+      ['Generative AI Engineering', 'IBM · Professional Certificate'],
+      ['Generative AI Leader', 'Google Cloud · Professional Certificate'],
+      ['TensorFlow Developer', 'Google · Certified 2024 · Valid to 2027'],
+      ['SolidWorks Associate', 'Dassault Systèmes · Certification'],
+      ['Cybersecurity Analyst', 'IBM · Professional Certificate'],
+      ['2nd place · Robotics', 'Academia Inova 4.0 competition'],
+      ['1st place · Energy Sustainability', 'Academia Inova 4.0 competition'],
+      ['Cambridge C2 Proficiency', 'English · Language certification'],
+      ['CILS B1 · Italian', 'Università per Stranieri di Siena'],
+      ['eStudent.ro · Platform validation', 'Institutional feedback & testing · Mar–Jun 2025'],
+    ],
+    processLabel: '03 / HOW I WORK', processTitle: 'THINK. MAKE.<br>MAKE IT BETTER.', processIntro: 'A practical approach.<br>From the right question to a working system.',
+    steps: [['Discover', 'Understand the problem, the people and the real-world constraints.'], ['Design', 'Map the system. Choose the tools. Give every part a purpose.'], ['Build', 'Prototype, write code and bring hardware and software together.'], ['Refine', 'Test, debug and document. Improve what the system teaches us.']],
+    contactLabel: '04 / WHAT’S NEXT?', contactTitle: 'LET’S BUILD<br>SOMETHING<br><span>GREAT.</span>', contactIntro: 'Have a project in mind or a place on your team?<br>Let’s start a conversation.', emailLabel: 'DROP ME A LINE', footerNote: 'Built with purpose. Made to move.', backTop: 'Back to top', resumeNote: 'PDF · Romanian',
+  },
+  ro: {
+    title: 'Ștefan Andrei Lucian — Inginer Robotică & IA',
+    description: 'Robotică, inteligență artificială aplicată și integrare hardware–software. Descoperă portofoliul ingineresc al lui Ștefan Andrei Lucian, din Cluj-Napoca.',
+    skip: 'Sari la conținut', work: 'Proiecte', about: 'Despre', contact: 'Contact', resume: 'CV', resumeLabel: 'Descarcă CV-ul (PDF, română)', menu: 'Meniu', close: 'Închide', location: 'CLUJ-NAPOCA, ROMÂNIA', discipline: 'ROBOTICĂ × IA × DEZVOLTARE SOFTWARE × WEB DESIGN',
+    heroName: ['ȘTEFAN', 'ANDREI', 'LUCIAN.'], role: 'Inginer robotică. Inginer IA.',
+    intro: 'Conectez software-ul cu lumea fizică. Absolvent de robotică, construiesc sisteme autonome, aplicații IA și punți între ele.',
+    viewWork: 'Vezi proiectele', getInTouch: 'Hai să vorbim', figure: 'FIG. 01 — BANDA MÖBIUS', figureSide: 'O SUPRAFAȚĂ / O MARGINE', pauseMotion: 'Pauză animație', playMotion: 'Reia animația', scroll: 'DESCOPERĂ MAI JOS', availability: 'Deschis la oportunități de inginer junior',
+    workLabel: '01 / PROIECTE SELECTATE', workTitle: 'DE LA IDEI LA<br>SISTEME FUNCȚIONALE.', workIntro: 'De la roboți autonomi la IA privată.<br>O selecție de proiecte gândite și construite de mine.', projectCount: '04 PROIECTE', details: 'Descoperă proiectul', hideDetails: 'Detalii despre proiect', problem: 'Problema', contribution: 'Contribuția mea', outcome: 'Rezultatul', projectLink: 'Vezi proiectul', linkPending: 'Linkul proiectului nu a fost furnizat.', illustration: 'ILUSTRAȚIE CONCEPTUALĂ',
+    aboutLabel: '02', aboutTitle: 'DESPRE & COMPETENȚE', aboutIntro: 'În elementul meu, între<br>hardware și software.',
+    blog: 'Blog', blogTitle: 'NOTE & ARTICOLE', blogIntro: 'Articole despre robotică, IA, software și design.', blogEmpty: 'Niciun articol publicat aici încă.', blogEmptyBody: 'Între timp, descoperă proiectele din portofoliu.', readArticle: 'Citește articolul', backBlog: 'Toate articolele', backWork: 'Toate proiectele', nextProject: 'Următorul proiect', projectLabel: 'PROIECT', gallery: 'Galerie', video: 'Video', watchVideo: 'Vezi videoclipul', model: 'Explorează în 3D', downloadModel: 'Descarcă modelul 3D', downloadStep: 'Descarcă fișierul STEP', modelHelp: 'Trage pentru rotire. Derulează sau apropie degetele pentru zoom.', modelError: 'Previzualizarea 3D nu a putut fi încărcată. Poți descărca modelul mai jos.', technologies: 'Tehnologii', published: 'Publicat',
+    bio: 'Sunt Ștefan, absolvent de Inginerie Robotică la Universitatea Tehnică din Cluj-Napoca (2026). Pregătirea mea îmbină programarea, electronica, mecanica și integrarea sistemelor.',
+    education: 'Licență / Inginerie Robotică', university: 'Universitatea Tehnică din Cluj-Napoca', educationDate: '2022 — 2026',
+    aboutFigure: 'FIG. 02 — ICOSAEDRU', featured: 'ÎN PRIM-PLAN / LUCRARE DE LICENȚĂ', socials: 'Profiluri sociale',
+    skillGroups: [ ['Software & IA', ['Python', 'C++', 'SQL', 'LLM / RAG', 'React', 'MATLAB']], ['Robotică & embedded', ['ROS2 Humble', 'NVIDIA Jetson', 'ESP32', 'Teensy', 'Linux', 'Git']], ['Mecanică & automatizare', ['SolidWorks', 'Fusion 360', 'CATIA V5', 'TIA Portal', 'RoboDK', 'Imprimare 3D']] ],
+    highlightsLabel: 'REALIZĂRI & RECUNOAȘTERE', pauseHighlights: 'Pauză realizări', playHighlights: 'Reia realizările',
+    highlights: [
+      ['Inginerie Robotică', 'Absolvent · UTCN · 2026'],
+      ['Ghid autonom de muzeu', 'Proiectat și construit · Licență · 2025–2026'],
+      ['Generative AI Engineering', 'IBM · Certificat profesional'],
+      ['Generative AI Leader', 'Google Cloud · Certificat profesional'],
+      ['TensorFlow Developer', 'Google · Certificat în 2024 · Valabil până în 2027'],
+      ['SolidWorks Associate', 'Dassault Systèmes · Certificare'],
+      ['Cybersecurity Analyst', 'IBM · Certificat profesional'],
+      ['Locul 2 · Robotică', 'Concursul Academia Inova 4.0'],
+      ['Locul 1 · Sustenabilitate energetică', 'Concursul Academia Inova 4.0'],
+      ['Cambridge C2 Proficiency', 'Engleză · Certificare lingvistică'],
+      ['CILS B1 · Italiană', 'Università per Stranieri di Siena'],
+      ['eStudent.ro · Validarea platformei', 'Feedback și testare instituțională · Mar–Iun 2025'],
+    ],
+    processLabel: '03 / CUM LUCREZ', processTitle: 'GÂNDESC. CONSTRUIESC.<br>ÎMBUNĂTĂȚESC.', processIntro: 'O abordare practică.<br>De la întrebarea potrivită la un sistem funcțional.',
+    steps: [['Descopăr', 'Înțeleg problema, oamenii și constrângerile din lumea reală.'], ['Proiectez', 'Definesc sistemul. Aleg uneltele. Fiecare componentă are un scop.'], ['Construiesc', 'Prototipez, scriu cod și aduc împreună hardware-ul și software-ul.'], ['Îmbunătățesc', 'Testez, depanez și documentez. Învăț din comportamentul sistemului.']],
+    contactLabel: '04 / CE URMEAZĂ?', contactTitle: 'HAI SĂ CONSTRUIM<br>CEVA<br><span>GROZAV.</span>', contactIntro: 'Ai un proiect în minte sau un loc în echipa ta?<br>Hai să începem o conversație.', emailLabel: 'SCRIE-MI', footerNote: 'Construit cu sens. Creat pentru mișcare.', backTop: 'Înapoi sus', resumeNote: 'PDF · Română',
+  },
+};
