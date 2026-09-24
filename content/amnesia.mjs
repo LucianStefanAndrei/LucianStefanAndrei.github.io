@@ -18,6 +18,7 @@ export const amnesia = {
   tags: ['Python', 'Local AI / RAG', 'Vector search', 'Argon2id / AES-256-GCM'],
   url: 'https://github.com/LucianStefanAndrei/Amnesia',
   media: {
+    screenshots: true,
     gallery: screenshots.map(([file, en, ro]) => ({ src: mediaRoot + file, width: 1919, height: 1079, alt: { en, ro } })),
     video: mediaRoot + 'video.mp4',
     poster: mediaRoot + 'poster.jpg',

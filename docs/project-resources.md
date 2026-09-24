@@ -4,6 +4,8 @@ This inventory describes what is available for the portfolio, not whether the en
 
 All eight projects share one Projects archive. Raw resources are kept in `public/projects/`; browser-ready media is in `assets/media/projects/`; generated HTML exists only in `dist/projects/` and `dist/ro/projects/`.
 
+All eight also appear on the homepage, with four initially visible and a button to reveal the remainder. The web-design carousel below links to the seven existing collections.
+
 ## Highest priority
 
 | Project | Currently supplied | Resources needed to strengthen the page |

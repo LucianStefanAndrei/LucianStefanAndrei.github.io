@@ -248,7 +248,8 @@ test('both languages: responsive layout, local assets, content and accessibility
     await page.evaluate(() => document.fonts.ready);
     assert.equal(await page.locator('html').getAttribute('lang'), lang);
     assert.equal(await page.locator('h1').count(), 1);
-    assert.equal(await page.locator('.project-card').count(), 4);
+    assert.equal(await page.locator('.project-card').count(), 8);
+    assert.equal(await page.locator('.project-card:visible').count(), 4);
     for (const width of [320, 375, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 900 });
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true, `${lang} overflows at ${width}px`);
@@ -272,6 +273,67 @@ test('both languages: responsive layout, local assets, content and accessibility
   }
 });
 
+test('homepage expands all projects and opens links or deep links in both languages', async () => {
+  const page = await browser.newPage({ reducedMotion: 'reduce', viewport: { width: 390, height: 844 } });
+  for (const lang of ['', 'ro/']) {
+    await page.goto(`${url}/${lang}`);
+    const toggle = page.locator('.projects-toggle');
+    assert.equal(await page.locator('.project-card:visible').count(), 4);
+    assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
+    await toggle.focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await page.locator('.project-card:visible').count(), 8);
+    assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
+    await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(() => document.activeElement.closest('.project-card')?.id), 'assistive-cane');
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await page.addScriptTag({ path: require.resolve('axe-core/axe.min.js') });
+    const violations = await page.evaluate(async () => (await axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa'] } })).violations.map(v => v.id));
+    assert.deepEqual(violations, []);
+    await toggle.click();
+    assert.equal(await page.locator('.project-card:visible').count(), 4);
+    await page.goto(`${url}/${lang}index.html#tool-changer`);
+    assert.equal(await page.locator('#tool-changer').isVisible(), true);
+    assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
+    await page.locator('#tool-changer a').click();
+    await page.waitForURL(`**/${lang}projects/tool-changer/index.html`);
+    await page.locator('.menu-toggle').click();
+    assert.equal(await page.locator('.nav-home').textContent(), lang ? 'Acasă' : 'Home');
+    await page.locator('.nav-home').click();
+    await page.waitForURL(`**/${lang}index.html#top`);
+  }
+  await page.close();
+});
+
+test('homepage design carousel supports buttons, keyboard, bounds and project navigation', async () => {
+  const page = await browser.newPage({ reducedMotion: 'reduce' });
+  for (const lang of ['', 'ro/']) {
+    for (const width of [375, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(`${url}/${lang}`);
+      const track = page.locator('.design-reel-track');
+      const previous = page.locator('[data-design-direction="-1"]');
+      const next = page.locator('[data-design-direction="1"]');
+      assert.equal(await track.locator('.design-card').count(), 7);
+      assert.equal(await previous.isDisabled(), true);
+      await next.click();
+      await page.waitForFunction(() => document.querySelector('.design-reel-track').scrollLeft > 0);
+      await page.waitForFunction(() => !document.querySelector('[data-design-direction="-1"]').disabled);
+      const offset = await track.evaluate(el => el.scrollLeft);
+      await track.focus();
+      await page.keyboard.press('ArrowRight');
+      await page.waitForFunction(offset => document.querySelector('.design-reel-track').scrollLeft > offset, offset);
+      await track.locator('a').last().focus();
+      await page.waitForFunction(() => document.querySelector('[data-design-direction="1"]').disabled);
+      assert.match(await page.locator('.design-reel-count').textContent(), /7 \/ 7$/);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+      await track.locator('a').last().press('Enter');
+      await page.waitForURL(`**/${lang}web-design/manila/index.html`);
+    }
+  }
+  await page.close();
+});
+
 test('mobile menu, keyboard dismissal and language switch preserve section', async () => {
   const page = await browser.newPage({ viewport: { width: 375, height: 812 }, reducedMotion: 'reduce' });
   await page.goto(url);
@@ -283,18 +345,18 @@ test('mobile menu, keyboard dismissal and language switch preserve section', asy
   const violations = await page.evaluate(async () => (await axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21aa'] } })).violations.map(v => v.id));
   assert.deepEqual(violations, []);
   await page.keyboard.press('Tab');
-  assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Work');
+  assert.equal(await page.evaluate(() => document.activeElement.textContent), 'Home');
   await page.keyboard.press('Escape');
   assert.equal(await menu.getAttribute('aria-expanded'), 'false');
   assert.equal(await menu.evaluate(el => el === document.activeElement), true);
   await menu.click();
-  await page.locator('nav a[href="#work"]').click();
+  await page.locator('nav a[href="#top"]').click();
   assert.equal(await menu.getAttribute('aria-expanded'), 'false');
   await page.evaluate(() => window.scrollTo(0, 0));
   await menu.click();
   await page.locator('.language-switch a[lang="ro"]').click();
   assert.equal(await page.locator('html').getAttribute('lang'), 'ro');
-  assert.ok(page.url().endsWith('/ro/index.html#work'));
+  assert.ok(page.url().endsWith('/ro/index.html#top'));
   await page.setViewportSize({ width: 1280, height: 900 });
   assert.equal(await page.locator('nav').evaluate(el => el.inert), false);
   await page.close();
@@ -305,6 +367,12 @@ test('no-JavaScript content, project navigation and galleries remain usable', as
   await page.goto(`${url}/ro/`);
   assert.equal(await page.locator('nav').isVisible(), true);
   assert.equal(await page.locator('.project-card').first().isVisible(), true);
+  assert.equal(await page.locator('.project-card:visible').count(), 8);
+  assert.equal(await page.locator('.projects-toggle').isVisible(), false);
+  assert.equal(await page.locator('.design-reel-track .design-card').count(), 7);
+  assert.equal(await page.locator('.design-reel-controls').isVisible(), false);
+  await page.locator('.design-reel-track').evaluate(el => { el.scrollLeft = el.scrollWidth; });
+  assert.ok(await page.locator('.design-reel-track').evaluate(el => el.scrollLeft > 0));
   assert.ok((await page.locator('.mobius-ascii').textContent()).trim().length > 100);
   await page.locator('.project-card-link').first().click();
   await page.waitForURL('**/projects/museum-robot/index.html');
@@ -357,7 +425,9 @@ test('portrait, featured thesis, social icons, and all CV milestones are present
   const page = await browser.newPage({ reducedMotion: 'reduce' });
   await page.goto(url);
   await page.locator('.nav-portrait img').evaluate(img => img.decode());
-  assert.equal(await page.locator('.nav-portrait img').evaluate(img => img.naturalWidth), 320);
+  assert.ok(await page.locator('.nav-portrait img').evaluate(img => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0));
+  const portraitBounds = await page.locator('.nav-portrait').boundingBox();
+  assert.equal(portraitBounds.width, portraitBounds.height);
   assert.equal(await page.locator('.project-featured').getAttribute('id'), 'museum-robot');
   assert.equal(await page.locator('.footer-socials a svg').count(), 4);
   assert.equal(await page.locator('.footer-socials a').last().getAttribute('href'), 'https://medium.com/@stefanandreilucian2');

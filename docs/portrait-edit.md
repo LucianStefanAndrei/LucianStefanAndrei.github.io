@@ -2,7 +2,7 @@
 
 - Source: user-supplied photograph, retained locally outside the published website.
 - Edit mode: built-in image generation/editing tool, using the source as the edit target.
-- Website asset: [`assets/portrait.jpg`](../assets/portrait.jpg), optimized to 320 × 320 pixels. The navigation applies the circular mask.
+- Website asset: [`assets/portrait.jpg`](../assets/portrait.jpg). The navigation reserves a square display area and applies the circular mask; replacing this asset does not require a fixed source resolution.
 - The original generated image remains in the local editing workspace; only the optimized website asset is published.
 
 Exact edit prompt:

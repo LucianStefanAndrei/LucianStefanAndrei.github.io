@@ -1,21 +1,26 @@
-import { profile, projects, copy } from '../content/site.mjs';
+import { profile, copy } from '../content/site.mjs';
+import { catalog, designWorks } from '../content/catalog.mjs';
+import { sections } from '../content/sections.mjs';
 import { renderMobius } from '../assets/mobius.mjs';
 import { renderPolyhedron } from '../assets/polyhedron.mjs';
 import { layout, esc, arrow, edgeDecor, socialLinks, projectRoute } from './layout.mjs';
 
 export function renderHome(lang) {
- const t=copy[lang];
+ const t=copy[lang],s=sections[lang];
  const base=lang==='en'?'./':'../';
 
- const asset=name=>base+'assets/'+name;
+
  const milestones=t.highlights.map(([title,detail])=>`<li><i aria-hidden="true">✳</i><div><strong>${esc(title)}</strong><span>${esc(detail)}</span></div></li>`).join('');
   const card = (p, i) => {
     const c = p[lang];
     const href = `${base}${projectRoute(lang,p.id)}`;
+    const preview=p.image?'assets/'+p.image:p.media?.poster||p.media?.gallery?.[0]?.src;
+    const isMedia=!p.image||Boolean(c.previewLabel);
+    const previewLabel=c.previewLabel||(p.image?t.illustration:p.media?.model?t.modelPreview:t.videoPreview);
     return `<article class="project-card project-${i + 1}${i === 0 ? ' project-featured' : ''} reveal" id="${p.id}"><a class="project-card-link" href="${href}" aria-label="${esc(c.name)}">
-      <div class="project-preview"><div class="preview-label"><span>${String(i + 1).padStart(2, '0')} / ${esc(c.name)}</span><span aria-hidden="true">+</span></div>
-        <img src="${asset(p.image)}" alt="${esc(c.alt)}" width="${p.imageWidth||720}" height="${p.imageHeight||420}" loading="lazy" decoding="async">
-        <span class="illustration-label">${esc(c.previewLabel||t.illustration)}</span><span class="preview-corner" aria-hidden="true"></span>
+      <div class="project-preview${isMedia?' is-media':''}"><div class="preview-label"><span>${String(i + 1).padStart(2, '0')} / ${esc(c.name)}</span><span aria-hidden="true">+</span></div>
+        <img src="${base}${preview}" alt="${esc(c.alt||c.name+' — '+previewLabel)}" width="${p.imageWidth||720}" height="${p.imageHeight||420}" loading="lazy" decoding="async">
+        <span class="illustration-label">${esc(previewLabel)}</span><span class="preview-corner" aria-hidden="true"></span>
       </div>
       <div class="project-content">${i === 0 ? `<div class="featured-label"><span aria-hidden="true">↗</span>${t.featured}</div>` : ''}<div class="project-meta"><span>${esc(c.category)}</span><span>${esc(c.date)}</span></div>
         <h3>${esc(c.name)}</h3><p>${esc(c.description)}</p>
@@ -24,7 +29,7 @@ export function renderHome(lang) {
       </div>
     </a></article>`;
   };
-return layout({lang,route:lang==='en'?'index.html':'ro/index.html',title:t.title,description:t.description,home:true,alternates:{en:'index.html',ro:'ro/index.html'},scripts:['mobius.mjs','polyhedron.mjs'],body:`
+return layout({lang,route:lang==='en'?'index.html':'ro/index.html',title:t.title,description:t.description,home:true,alternates:{en:'index.html',ro:'ro/index.html'},scripts:['mobius.mjs','polyhedron.mjs','home.js'],body:`
     <section class="hero container" aria-labelledby="hero-title">
       <div class="hero-topline"><span><i class="tiny-square" aria-hidden="true"></i>${t.discipline}</span><span>${t.location}</span></div>
       <div class="hero-grid"><div class="hero-copy"><h1 id="hero-title">${t.heroName.map((part, i) => `<span style="--i:${i}">${part}</span>`).join('')}</h1><p class="hero-role">${t.role}</p><p class="hero-intro">${t.intro}</p><div class="hero-actions"><a class="button button-red" href="#work">${t.viewWork}<span aria-hidden="true">↘</span></a><a class="button button-outline" href="#contact">${t.getInTouch}<span aria-hidden="true">↗</span></a></div></div>
@@ -32,8 +37,17 @@ return layout({lang,route:lang==='en'?'index.html':'ro/index.html',title:t.title
       <div class="hero-bottom"><span class="availability"><i aria-hidden="true"></i>${t.availability}</span><a href="#work">${t.scroll}<span aria-hidden="true">↓</span></a></div>
     </section>
     <section class="work section-rule" id="work" aria-labelledby="work-title">${edgeDecor}<div class="container section-space">
-      <div class="section-kicker"><span>${t.workLabel}</span><span>${t.projectCount}</span></div><div class="section-heading reveal"><h2 id="work-title">${t.workTitle}</h2><p>${t.workIntro}</p></div>
-      <div class="project-grid">${projects.map(card).join('')}</div>
+      <div class="section-kicker"><span>${t.workLabel}</span><span>${String(catalog.length).padStart(2,'0')} ${t.projectUnit}</span></div><div class="section-heading reveal"><h2 id="work-title">${t.workTitle}</h2><p>${t.workIntro}</p></div>
+      <div class="project-grid project-grid-initial">${catalog.slice(0,4).map(card).join('')}</div>
+      ${catalog.length>4?`<div class="projects-toggle-wrap"><button class="button button-yellow projects-toggle" type="button" aria-expanded="false" aria-controls="additional-projects" data-more="${t.showMore} (${catalog.length-4})" data-less="${t.showLess}" hidden><span>${t.showMore} (${catalog.length-4})</span><span class="toggle-symbol" aria-hidden="true">＋</span></button></div><div class="project-grid additional-projects" id="additional-projects">${catalog.slice(4).map((p,i)=>card(p,i+4)).join('')}</div>`:''}
+    </div></section>
+    <section class="home-design section-rule" id="design" aria-labelledby="home-design-title"><div class="container section-space">
+      <div class="section-kicker"><span>${s.design}</span><a class="text-link" href="${base}${lang==='ro'?'ro/':''}web-design/index.html">${s.allDesign} ${arrow}</a></div>
+      <div class="section-heading"><h2 id="home-design-title">${s.designTitle}</h2><p>${s.designIntro}</p></div>
+      <div class="design-reel" data-design-reel role="region" aria-roledescription="${t.carousel}" aria-labelledby="home-design-title">
+        <ul class="design-reel-track" id="design-reel-track" tabindex="0" aria-label="${t.designBrowse}">${designWorks.map((w,i)=>`<li class="design-card"><a href="${base}${lang==='ro'?'ro/':''}web-design/${w.id}/index.html"><div class="design-image"><img src="${base}assets/media/design/${w.images[0]}" alt="${esc(w[lang])}" width="1200" height="900" loading="lazy" decoding="async"></div><span class="eyebrow">${String(i+1).padStart(2,'0')} / ${s.design}</span><div class="design-card-title"><h3>${esc(w[lang])}</h3>${arrow}</div></a></li>`).join('')}</ul>
+        <div class="design-reel-controls" hidden><span class="design-reel-count" aria-live="polite" aria-atomic="true"></span><button type="button" data-design-direction="-1" aria-label="${t.previousDesign}" aria-controls="design-reel-track">←</button><button type="button" data-design-direction="1" aria-label="${t.nextDesign}" aria-controls="design-reel-track">→</button></div>
+      </div>
     </div></section>
     <section class="about section-rule" id="about" aria-labelledby="about-title">${edgeDecor}<div class="container section-space"><div class="about-section-heading"><span class="section-index">${t.aboutLabel}</span><h2 id="about-title" class="reveal">${t.aboutTitle}</h2><span aria-hidden="true">● ■ ▲</span></div><div class="about-grid">
         <div class="about-portrait reveal"><div class="about-art ascii-panel"><div class="art-coordinates" aria-hidden="true"><span>Σ / 002</span><span>+ + +</span></div><div class="ascii-stage" aria-hidden="true"><pre class="ascii-output polyhedron-ascii">${esc(renderPolyhedron())}</pre></div><div class="art-footer"><span>${t.aboutFigure}</span><button class="motion-toggle" type="button" data-pause="${t.pauseMotion}" data-play="${t.playMotion}" hidden>${t.pauseMotion}</button></div></div></div>

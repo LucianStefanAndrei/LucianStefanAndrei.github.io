@@ -14,7 +14,7 @@ npm run dev
 
 Open **http://localhost:3000**. The preview server serves `dist/`; run the build after edits. Upload the contents of `dist/` to a static host. The build currently generates 42 pages: the homepage, Projects archive, eight project details, Web Design archive and seven collections, Blog archive and two articles, each in both language routes.
 
-The homepage retains four selected engineering/software projects. One Projects archive includes all eight software, robotics and mechanical projects. Web Design and Blog remain separate navigation destinations. Every project card opens its own page.
+The homepage includes all eight engineering/software projects: four are shown initially, with a bilingual “Show more projects” button revealing the rest. Without JavaScript, all eight remain visible. A manual web-design carousel follows the projects, with touch scrolling, arrow buttons, keyboard navigation and links to all seven collections. Projects, Web Design and Blog also retain their own archive pages. The Home / Acasă menu link returns to the top of the homepage from every page.
 
 For GitHub Pages, follow the [deployment and update guide](docs/github-pages.md). The included Actions workflow builds and publishes `dist/` on pushes to `main`; original CAD source files and uncompressed videos are excluded from Git by `.gitignore`.
 
