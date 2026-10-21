@@ -84,7 +84,7 @@ test('bracket media starts with manufacturing, pauses hidden videos and wraps fu
     const response = await page.request.get(new URL(pdf, page.url()).href);
     assert.equal(response.status(), 200);
     assert.equal(response.headers()['content-type'], 'application/pdf');
-    assert.match(await page.locator('#report').textContent(), /46/);
+    assert.match(await page.locator('#report').textContent(), /51/);
     assert.equal(await page.locator('video').count(), 1);
     const video = page.locator('.gallery-slide:visible video');
     await video.evaluate(v => { v.muted = true; v.load(); });

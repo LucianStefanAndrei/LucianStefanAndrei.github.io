@@ -7,6 +7,7 @@ export const nasaBracket = {
   id: 'nasa-bracket',
   tags: ['Siemens NX', 'Reverse engineering', 'CAD / CAM', 'CNC'],
   url: null,
+  sourceDocument: 'https://ntrs.nasa.gov/api/citations/19840025362/downloads/19840025362.pdf',
   media: {
     model: base + 'model.glb',
     orbit: '-145deg 70deg 120%',
@@ -36,9 +37,10 @@ export const nasaBracket = {
       'The report estimates 7 min 57 s of machining, excluding setup changes, inspection and finishing. A modified generic three-axis machine represents the planned process, with the Haas VF-2SS as reference equipment. Physical machining, machine-specific verification and dimensional inspection remain future validation steps.',
     ],
     galleryTitle: 'Manufacturing film & drawings',
+    sourceLabel: 'Original NASA report: Development of Robotics Facility, Docking Test Hardware (PDF, English)',
     documentTitle: 'Manufacturing process report',
-    documentSummary: 'The 46-page report documents the reverse engineering, material and stock selection, workholding, cutting tools, Siemens NX CAM programming, simulation results, inspection plan and preliminary time and cost estimates. It is an educational manufacturing study, with assumptions and validation limits documented throughout.',
-    documentLink: 'Read the full report (PDF, English · 46 pages)',
+    documentSummary: 'The 51-page report documents the reverse engineering, material and stock selection, workholding, cutting tools, Siemens NX CAM programming, simulation results, inspection plan and preliminary time and cost estimates. It is an educational manufacturing study, with assumptions and validation limits documented throughout.',
+    documentLink: 'Read the full report (PDF, English · 51 pages)',
   },
   ro: {
     name: 'Suport NASA 478019',
@@ -51,8 +53,9 @@ export const nasaBracket = {
       'Raportul estimează 7 min 57 s de prelucrare, fără schimbarea prinderilor, inspecție și finisare ulterioară. O mașină generică modificată, cu trei axe, reprezintă procesul planificat, având Haas VF-2SS drept echipament de referință. Prelucrarea fizică, verificarea pe mașina reală și inspecția dimensională rămân etape viitoare de validare.',
     ],
     galleryTitle: 'Simularea fabricației și desene',
+    sourceLabel: 'Raportul NASA original: Development of Robotics Facility, Docking Test Hardware (PDF, engleză)',
     documentTitle: 'Raportul procesului de fabricație',
-    documentSummary: 'Raportul de 46 de pagini documentează ingineria inversă, alegerea materialului și a semifabricatului, prinderile, sculele, programarea CAM în Siemens NX, rezultatele simulării, planul de inspecție și estimările preliminare de timp și cost. Este un studiu educațional de fabricație, care precizează ipotezele și limitele validării.',
-    documentLink: 'Citește raportul integral (PDF, engleză · 46 de pagini)',
+    documentSummary: 'Raportul de 51 de pagini documentează ingineria inversă, alegerea materialului și a semifabricatului, prinderile, sculele, programarea CAM în Siemens NX, rezultatele simulării, planul de inspecție și estimările preliminare de timp și cost. Este un studiu educațional de fabricație, care precizează ipotezele și limitele validării.',
+    documentLink: 'Citește raportul integral (PDF, engleză · 51 de pagini)',
   },
 };
