@@ -2,9 +2,9 @@
 
 This inventory describes what is available for the portfolio, not whether the engineering or software project itself is finished. It is based on `public/projects/`, prepared media and the current catalog.
 
-All eight projects share one Projects archive. Raw resources are kept in `public/projects/`; browser-ready media is in `assets/media/projects/`; generated HTML exists only in `dist/projects/` and `dist/ro/projects/`.
+All nine projects share one Projects archive. Raw resources are kept in `public/projects/`; browser-ready media is in `assets/media/projects/`; generated HTML exists only in `dist/projects/` and `dist/ro/projects/`.
 
-All eight also appear on the homepage, with four initially visible and a button to reveal the remainder. The web-design carousel below links to the seven existing collections.
+All nine also appear on the homepage, with four initially visible and a button to reveal the remainder. The web-design carousel below links to the seven existing collections.
 
 ## Highest priority
 
@@ -19,12 +19,15 @@ Amnesia originals are in `public/projects/Amnesia/`; bilingual copy and gallery 
 
 | Project / source folder | Available now | Further resources or explanation to add |
 | --- | --- | --- |
+| NASA Bracket 478019 / `nasa-bracket/` | STEP model, four machining videos, seven images and a 46-page English manufacturing report; bilingual summary and mixed-media carousel | Physical machining, complete machine-level verification and dimensional inspection remain future validation steps. |
 | Worm Gearbox Design / `ReductorMelcat/` | STEP assembly, one technical drawing, short description | Gear ratio/load requirements, calculation excerpts and explanation of the design choices. A motion demo is optional. |
 | Robotic Gear Manufacturing / `CelulaProducereRotiDintate/` | RoboDK video, calculation-report image, short description | Explain the cell sequence, robot/tool choices, your contribution and what the simulation verified. |
 | AI Assistive Cane / `BastonNevazatori/` | STEP assembly and concept description | A block diagram and clear distinction between designed and implemented features. Add prototype/test evidence only if it exists; the page currently describes a concept. |
 | Pneumatic Arm / `Brat_Pneumatic/` | STEP assembly, six calculation images, short description | A pneumatic circuit or motion sequence and a concise account of requirements, contribution and results. A motion video is optional. |
 | CNC Milling Simulation / `Piesa_GCode/` | Simulation video, technical drawing, short description | Explain the setup, machining operations/toolpath and verification. A short G-code excerpt could illustrate your work; no code file has been supplied. |
 | Two-Level Robotic Tool Changer / `Schimbator_Scule/` | STEP assembly, one technical drawing, short description | Explain the intended application and tool-change mechanism/sequence. A motion demo or sequence diagram would help. The removed second drawing is no longer used. |
+
+The bracket source files are in `public/projects/nasa-bracket/`; prepared media and its report are in `assets/media/projects/nasa-bracket/`. `content/nasa-bracket.mjs` controls its captions, summary and media order. `Manufacturing_Process.mp4` is the first carousel slide. Its PDF describes an educational Siemens NX manufacturing simulation, not physically validated production.
 
 Amnesia links to its supplied GitHub repository. Other project repository/demo URLs remain unset. Public download links for original CAD files remain disabled. See [the GitHub and CV review](project-review.md) for additional candidates and consistency notes.
 

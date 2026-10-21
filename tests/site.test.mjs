@@ -38,7 +38,7 @@ test('all generated pages and their local destinations exist', async () => {
 test('new sections and detail pages are responsive and accessible in both languages', async () => {
   const page = await browser.newPage({ reducedMotion: 'reduce' });
   for (const lang of ['', 'ro/']) {
-    for (const route of ['projects/', 'web-design/', 'blog/', 'projects/tool-changer/', 'projects/museum-robot/', 'projects/amnesia/', 'web-design/manila/', 'blog/we-are-not-prepared-for-ai/']) {
+    for (const route of ['projects/', 'web-design/', 'blog/', 'projects/tool-changer/', 'projects/museum-robot/', 'projects/amnesia/', 'projects/nasa-bracket/', 'web-design/manila/', 'blog/we-are-not-prepared-for-ai/']) {
       await page.goto(`${url}/${lang}${route}`);
       assert.equal(await page.getByText('undefined', { exact: true }).count(), 0, `${lang}${route} missing translation`);
       for (const width of [320, 768, 1051, 1440]) {
@@ -70,6 +70,60 @@ test('galleries support next, previous, wrapping and keyboard controls', async (
   await page.close();
 });
 
+test('bracket media starts with manufacturing, pauses hidden videos and wraps fullscreen images', async () => {
+  const page = await browser.newPage({ reducedMotion: 'reduce' });
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  for (const lang of ['', 'ro/']) {
+    await page.goto(`${url}/${lang}projects/nasa-bracket/`);
+    assert.equal(await page.locator('.gallery-slide').count(), 11);
+    assert.equal(await page.locator('.gallery-slide:visible').count(), 1);
+    assert.match(await page.locator('.gallery-slide:visible source').getAttribute('src'), /Manufacturing_Process\.mp4$/);
+    assert.ok(await page.locator('#gallery').evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('#model')) & Node.DOCUMENT_POSITION_FOLLOWING)));
+    const pdf = await page.locator('#report a').getAttribute('href');
+    const response = await page.request.get(new URL(pdf, page.url()).href);
+    assert.equal(response.status(), 200);
+    assert.equal(response.headers()['content-type'], 'application/pdf');
+    assert.match(await page.locator('#report').textContent(), /46/);
+    for (let i = 0; i < 4; i++) {
+      const video = page.locator('.gallery-slide:visible video');
+      await video.evaluate(v => { v.muted = true; v.load(); });
+      await page.waitForFunction(() => document.querySelector('.gallery-slide:not([hidden]) video')?.readyState >= 2);
+      await video.evaluate(v => v.play());
+      await page.waitForFunction(() => document.querySelector('.gallery-slide:not([hidden]) video')?.currentTime > 0);
+      await video.focus();
+      await page.keyboard.press('ArrowRight');
+      assert.equal(await page.locator('.gallery-count').textContent(), `${i + 1} / 11`);
+      await page.locator('[data-direction="1"]').click();
+      assert.equal(await page.locator('video').nth(i).evaluate(v => v.paused), true);
+    }
+    await page.locator('.gallery-slide:visible .image-fullscreen').click();
+    assert.equal(await page.locator('.image-viewer').isVisible(), true);
+    await page.keyboard.press('ArrowLeft');
+    assert.equal(await page.locator('.image-viewer-count').textContent(), '11 / 11');
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.locator('.image-viewer-count').textContent(), '5 / 11');
+    await page.keyboard.press('Escape');
+    assert.equal(await page.locator('.gallery-slide:visible .image-fullscreen').evaluate(el => el === document.activeElement), true);
+    const image = page.locator('.gallery-slide:visible img');
+    await image.evaluate(el => {
+      const touch = clientX => new Touch({ identifier: 1, target: el, clientX, clientY: 200 });
+      el.dispatchEvent(new TouchEvent('touchstart', { bubbles: true, touches: [touch(240)] }));
+      el.dispatchEvent(new TouchEvent('touchend', { bubbles: true, changedTouches: [touch(80)] }));
+    });
+    assert.equal(await page.locator('.gallery-count').textContent(), '6 / 11');
+    assert.equal((await page.request.get(`${url}/assets/media/projects/nasa-bracket/Manufacturing_Process.mp4`, { headers: { Range: 'bytes=0-1023' } })).status(), 206);
+  }
+  assert.deepEqual(errors, []);
+  await page.close();
+  const fallback = await browser.newPage({ javaScriptEnabled: false });
+  await fallback.goto(`${url}/projects/nasa-bracket/`);
+  assert.equal(await fallback.locator('.gallery-slide:visible').count(), 11);
+  assert.equal(await fallback.locator('video[controls]').count(), 4);
+  assert.equal(await fallback.locator('.model-poster').isVisible(), true);
+  await fallback.close();
+});
+
 test('Amnesia has translated features, real screenshots, playable video and its repository link', async () => {
   const page = await browser.newPage({ reducedMotion: 'reduce' });
   for (const lang of ['', 'ro/']) {
@@ -98,7 +152,7 @@ test('all projects share one archive and the CAD archive is removed', async () =
   const page = await browser.newPage({ reducedMotion: 'reduce' });
   for (const lang of ['', 'ro/']) {
     await page.goto(`${url}/${lang}projects/`);
-    assert.equal(await page.locator('.catalog-card').count(), 8);
+    assert.equal(await page.locator('.catalog-card').count(), 9);
     assert.equal(await page.locator('a[href*="cad/index.html"]').count(), 0);
     await page.locator('.catalog-card a[href*="/amnesia/"]').click();
     await page.locator('.back-link').click();
@@ -158,7 +212,7 @@ test('CAD sources are excluded from the published site', async () => {
 });
 
 test('all STEP-derived models load automatically, toggle wireframe, rotate and reset', { timeout: 120000 }, async () => {
-  for (const id of ['assistive-cane', 'pneumatic-arm', 'gearbox', 'tool-changer']) {
+  for (const id of ['assistive-cane', 'pneumatic-arm', 'gearbox', 'tool-changer', 'nasa-bracket']) {
     const page = await browser.newPage({ reducedMotion: 'reduce', viewport: { width: 1440, height: 1000 } });
     const errors = [], requests = [];
     page.on('pageerror', e => errors.push(e.message));
@@ -248,7 +302,7 @@ test('both languages: responsive layout, local assets, content and accessibility
     await page.evaluate(() => document.fonts.ready);
     assert.equal(await page.locator('html').getAttribute('lang'), lang);
     assert.equal(await page.locator('h1').count(), 1);
-    assert.equal(await page.locator('.project-card').count(), 8);
+    assert.equal(await page.locator('.project-card').count(), 9);
     assert.equal(await page.locator('.project-card:visible').count(), 4);
     for (const width of [320, 375, 768, 1024, 1440]) {
       await page.setViewportSize({ width, height: 900 });
@@ -282,7 +336,7 @@ test('homepage expands all projects and opens links or deep links in both langua
     assert.equal(await toggle.getAttribute('aria-expanded'), 'false');
     await toggle.focus();
     await page.keyboard.press('Enter');
-    assert.equal(await page.locator('.project-card:visible').count(), 8);
+    assert.equal(await page.locator('.project-card:visible').count(), 9);
     assert.equal(await toggle.getAttribute('aria-expanded'), 'true');
     await page.keyboard.press('Tab');
     assert.equal(await page.evaluate(() => document.activeElement.closest('.project-card')?.id), 'assistive-cane');
@@ -367,7 +421,7 @@ test('no-JavaScript content, project navigation and galleries remain usable', as
   await page.goto(`${url}/ro/`);
   assert.equal(await page.locator('nav').isVisible(), true);
   assert.equal(await page.locator('.project-card').first().isVisible(), true);
-  assert.equal(await page.locator('.project-card:visible').count(), 8);
+  assert.equal(await page.locator('.project-card:visible').count(), 9);
   assert.equal(await page.locator('.projects-toggle').isVisible(), false);
   assert.equal(await page.locator('.design-reel-track .design-card').count(), 7);
   assert.equal(await page.locator('.design-reel-controls').isVisible(), false);

@@ -1,4 +1,5 @@
 import { projects } from './site.mjs';
+import { nasaBracket } from './nasa-bracket.mjs';
 
 const data = {
   'museum-robot': {
@@ -39,6 +40,8 @@ for(const [id,d] of Object.entries(data)){
   };
   for(const lang of ['en','ro'])project[lang]={...project[lang],name:d[lang][0],description:d[lang][1],paragraphs:d[lang].slice(2),category:project[lang]?.category||(lang==='en'?'Engineering / CAD':'Inginerie / CAD'),date:project[lang]?.date||(lang==='en'?'ENGINEERING PROJECT':'PROIECT INGINERESC')};
 }
+
+catalog.push(nasaBracket);
 
 export const designWorks = [
   {id:'modern-logofolio',images:['modern-logofolio.png'],en:'Modern Logofolio',ro:'Logofoliu modern'},

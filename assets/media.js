@@ -2,11 +2,11 @@ for(const gallery of document.querySelectorAll('[data-carousel]')){
   const track=gallery.querySelector('.gallery-track'),slides=[...gallery.querySelectorAll('.gallery-slide')],controls=gallery.querySelector('.gallery-controls');
   let index=0,swiped=false;
   if(controls){gallery.classList.add('is-carousel');controls.hidden=false;}
-  const show=next=>{index=(next+slides.length)%slides.length;slides.forEach((slide,i)=>slide.hidden=i!==index);if(controls)controls.querySelector('.gallery-count').textContent=`${index+1} / ${slides.length}`;};
+  const show=next=>{index=(next+slides.length)%slides.length;slides.forEach((slide,i)=>{slide.hidden=i!==index;if(slide.hidden)slide.querySelector('video')?.pause();});if(controls)controls.querySelector('.gallery-count').textContent=`${index+1} / ${slides.length}`;};
   controls?.querySelectorAll('button').forEach(button=>button.addEventListener('click',()=>show(index+Number(button.dataset.direction))));
-  gallery.addEventListener('keydown',event=>{if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();show(index+(event.key==='ArrowRight'?1:-1));}});
+  gallery.addEventListener('keydown',event=>{if(event.target.closest('video'))return;if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();show(index+(event.key==='ArrowRight'?1:-1));}});
   let start=null;
-  track.addEventListener('touchstart',event=>{start=event.touches[0].clientX;swiped=false;},{passive:true});
+  track.addEventListener('touchstart',event=>{start=event.target.closest('video')?null:event.touches[0].clientX;swiped=false;},{passive:true});
   track.addEventListener('touchend',event=>{if(start!==null&&Math.abs(event.changedTouches[0].clientX-start)>45){swiped=true;show(index+(event.changedTouches[0].clientX<start?1:-1));}start=null;},{passive:true});
   const dialog=document.createElement('dialog');
   dialog.className='image-viewer';dialog.setAttribute('aria-label',gallery.getAttribute('aria-label'));
@@ -15,7 +15,9 @@ for(const gallery of document.querySelectorAll('[data-carousel]')){
   const close=dialog.querySelector('.image-viewer-close');close.textContent=gallery.dataset.close+' ×';
   dialog.querySelector('[data-step="-1"]').setAttribute('aria-label',gallery.dataset.previous);
   dialog.querySelector('[data-step="1"]').setAttribute('aria-label',gallery.dataset.next);
-  dialog.querySelector('.image-viewer-navigation').hidden=slides.length<2;
+  const imageIndices=slides.map((slide,i)=>slide.querySelector('.gallery-image')?i:-1).filter(i=>i>=0);
+  dialog.querySelector('.image-viewer-navigation').hidden=imageIndices.length<2;
+  const stepImage=step=>display(imageIndices[(imageIndices.indexOf(index)+step+imageIndices.length)%imageIndices.length]);
   const display=next=>{
     show(next);
     const original=slides[index].querySelector('img'),image=dialog.querySelector('img');
@@ -24,6 +26,7 @@ for(const gallery of document.querySelectorAll('[data-carousel]')){
     dialog.querySelector('.image-viewer-count').textContent=`${index+1} / ${slides.length}`;
   };
   slides.forEach((slide,i)=>{
+    if(!slide.querySelector('.gallery-image'))return;
     slide.querySelector('.image-fullscreen').hidden=false;
     const frame=slide.querySelector('.gallery-image');frame.classList.add('can-expand');
     frame.addEventListener('click',()=>{
@@ -34,16 +37,17 @@ for(const gallery of document.querySelectorAll('[data-carousel]')){
   close.addEventListener('click',()=>dialog.close());
   dialog.addEventListener('close',()=>{
     document.documentElement.classList.remove('image-viewer-open');
-    slides[index].querySelector('.image-fullscreen').focus({preventScroll:true});
+    slides[index].querySelector('.image-fullscreen')?.focus({preventScroll:true});
   });
-  dialog.querySelectorAll('[data-step]').forEach(button=>button.addEventListener('click',()=>display(index+Number(button.dataset.step))));
+  dialog.querySelectorAll('[data-step]').forEach(button=>button.addEventListener('click',()=>stepImage(Number(button.dataset.step))));
   dialog.addEventListener('keydown',event=>{
-    if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();display(index+(event.key==='ArrowRight'?1:-1));}
+    if(event.key==='ArrowRight'||event.key==='ArrowLeft'){event.preventDefault();stepImage(event.key==='ArrowRight'?1:-1);}
   });
   show(0);
 }
 
 for(const shell of document.querySelectorAll('[data-model]')){
+  const initialOrbit=shell.dataset.orbit||'35deg 70deg 120%';
   const stage=shell.querySelector('.model-stage'),status=shell.querySelector('.model-status');
   const controls=shell.querySelector('.model-tools'),wireframe=controls.querySelector('.wireframe-model'),reset=controls.querySelector('.reset-model');
   const busy=value=>{shell.setAttribute('aria-busy',String(value));wireframe.disabled=value;reset.disabled=value;};
@@ -52,7 +56,7 @@ for(const shell of document.querySelectorAll('[data-model]')){
     try{
       await import('./vendor/model-viewer.min.js');
       const viewer=document.createElement('model-viewer');
-      viewer.setAttribute('alt',shell.dataset.alt);viewer.setAttribute('camera-controls','');viewer.setAttribute('touch-action','pan-y');viewer.setAttribute('interaction-prompt','none');viewer.setAttribute('environment-image','neutral');viewer.setAttribute('camera-orbit','35deg 70deg 120%');viewer.setAttribute('exposure','0.8');viewer.setAttribute('loading','eager');
+      viewer.setAttribute('alt',shell.dataset.alt);viewer.setAttribute('camera-controls','');viewer.setAttribute('touch-action','pan-y');viewer.setAttribute('interaction-prompt','none');viewer.setAttribute('environment-image','neutral');viewer.setAttribute('camera-orbit',initialOrbit);viewer.setAttribute('exposure','0.8');viewer.setAttribute('loading','eager');
       let desiredWireframe=false,lastSource=null,savedView=null,failed=false;
       viewer.addEventListener('load',()=>{
         if(savedView){viewer.cameraOrbit=savedView.orbit;viewer.cameraTarget=savedView.target;viewer.fieldOfView=savedView.fov;viewer.jumpCameraToGoal();}
@@ -78,7 +82,7 @@ for(const shell of document.querySelectorAll('[data-model]')){
         busy(true);status.textContent=shell.dataset.loading;shell.dataset.loaded='false';
         viewer.src=desiredWireframe?shell.dataset.wireframe:shell.dataset.model;
       });
-      reset.addEventListener('click',()=>{savedView=null;viewer.cameraOrbit='35deg 70deg 120%';viewer.cameraTarget='auto auto auto';viewer.fieldOfView='auto';viewer.jumpCameraToGoal();});
+      reset.addEventListener('click',()=>{savedView=null;viewer.cameraOrbit=initialOrbit;viewer.cameraTarget='auto auto auto';viewer.fieldOfView='auto';viewer.jumpCameraToGoal();});
       const full=shell.querySelector('.fullscreen-model');
       if(!shell.requestFullscreen)full.hidden=true;
       else full.addEventListener('click',()=>{if(document.fullscreenElement)document.exitFullscreen();else shell.requestFullscreen().catch(()=>{});});

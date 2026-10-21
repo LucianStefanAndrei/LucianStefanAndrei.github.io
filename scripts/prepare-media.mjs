@@ -42,15 +42,18 @@ function toGLB(meshes) {
   return Buffer.concat([header,jh,json,bh,bin]);
 }
 
+folders['nasa-bracket']='nasa-bracket';
 const mode=process.argv[2]||'all';
+const selected=process.argv[3];
 let occt;
 for(const [folder,id] of Object.entries(folders)){
+  if(selected&&id!==selected)continue;
   const sourceDir=`public/projects/${folder}`,outDir=`assets/media/projects/${id}`;
   await mkdir(outDir,{recursive:true});
   const files=await readdir(sourceDir);
   for(const file of files){
     const source=path.join(sourceDir,file);
-    if(/\.step$/i.test(file)&&(mode==='all'||mode==='cad')){
+    if(/\.(step|stp)$/i.test(file)&&(mode==='all'||mode==='cad')){
       const target=`${outDir}/model.glb`;
       if(!await newer(target,source)){
         console.log(`Converting STEP: ${id}`);
@@ -62,11 +65,13 @@ for(const [folder,id] of Object.entries(folders)){
       }
     }
     if(/\.mp4$/i.test(file)&&(mode==='all'||mode==='video')){
-      const target=`${outDir}/video.mp4`;
+      const stem=id==='nasa-bracket'?path.parse(file).name:'video';
+      const target=`${outDir}/${stem}.mp4`;
+      const poster=`${outDir}/${id==='nasa-bracket'?stem:'poster'}.jpg`;
       if(!await newer(target,source)){
         console.log(`Encoding video: ${id}`);
         await run('ffmpeg',['-hide_banner','-loglevel','error','-y','-i',source,'-vf',"scale='min(1280,iw)':-2",'-c:v','libx264','-preset','fast','-crf','26','-pix_fmt','yuv420p','-c:a','aac','-b:a','128k','-movflags','+faststart',target]);
-        await run('ffmpeg',['-hide_banner','-loglevel','error','-y','-ss','2','-i',source,'-frames:v','1','-vf',"scale='min(1280,iw)':-2",`${outDir}/poster.jpg`]);
+        await run('ffmpeg',['-hide_banner','-loglevel','error','-y','-ss','2','-i',source,'-frames:v','1','-vf',"scale='min(1280,iw)':-2",poster]);
         console.log(`Encoded ${id}: ${Math.round((await stat(target)).size/1024/1024)} MB`);
       }
     }
