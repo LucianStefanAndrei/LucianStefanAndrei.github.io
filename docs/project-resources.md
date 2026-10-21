@@ -19,7 +19,7 @@ Amnesia originals are in `public/projects/Amnesia/`; bilingual copy and gallery 
 
 | Project / source folder | Available now | Further resources or explanation to add |
 | --- | --- | --- |
-| NASA Bracket 478019 / `nasa-bracket/` | STEP model, four machining videos, seven images and a 46-page English manufacturing report; bilingual summary and mixed-media carousel | Physical machining, complete machine-level verification and dimensional inspection remain future validation steps. |
+| NASA Bracket 478019 / `nasa-bracket/` | STEP model, one featured manufacturing video, seven images and a 46-page English manufacturing report; bilingual summary and mixed-media carousel | Physical machining, complete machine-level verification and dimensional inspection remain future validation steps. |
 | Worm Gearbox Design / `ReductorMelcat/` | STEP assembly, one technical drawing, short description | Gear ratio/load requirements, calculation excerpts and explanation of the design choices. A motion demo is optional. |
 | Robotic Gear Manufacturing / `CelulaProducereRotiDintate/` | RoboDK video, calculation-report image, short description | Explain the cell sequence, robot/tool choices, your contribution and what the simulation verified. |
 | AI Assistive Cane / `BastonNevazatori/` | STEP assembly and concept description | A block diagram and clear distinction between designed and implemented features. Add prototype/test evidence only if it exists; the page currently describes a concept. |

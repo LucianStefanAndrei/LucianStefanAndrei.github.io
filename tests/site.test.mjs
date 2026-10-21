@@ -76,7 +76,7 @@ test('bracket media starts with manufacturing, pauses hidden videos and wraps fu
   page.on('pageerror', error => errors.push(error.message));
   for (const lang of ['', 'ro/']) {
     await page.goto(`${url}/${lang}projects/nasa-bracket/`);
-    assert.equal(await page.locator('.gallery-slide').count(), 11);
+    assert.equal(await page.locator('.gallery-slide').count(), 8);
     assert.equal(await page.locator('.gallery-slide:visible').count(), 1);
     assert.match(await page.locator('.gallery-slide:visible source').getAttribute('src'), /Manufacturing_Process\.mp4$/);
     assert.ok(await page.locator('#gallery').evaluate(el => Boolean(el.compareDocumentPosition(document.querySelector('#model')) & Node.DOCUMENT_POSITION_FOLLOWING)));
@@ -85,24 +85,23 @@ test('bracket media starts with manufacturing, pauses hidden videos and wraps fu
     assert.equal(response.status(), 200);
     assert.equal(response.headers()['content-type'], 'application/pdf');
     assert.match(await page.locator('#report').textContent(), /46/);
-    for (let i = 0; i < 4; i++) {
-      const video = page.locator('.gallery-slide:visible video');
-      await video.evaluate(v => { v.muted = true; v.load(); });
-      await page.waitForFunction(() => document.querySelector('.gallery-slide:not([hidden]) video')?.readyState >= 2);
-      await video.evaluate(v => v.play());
-      await page.waitForFunction(() => document.querySelector('.gallery-slide:not([hidden]) video')?.currentTime > 0);
-      await video.focus();
-      await page.keyboard.press('ArrowRight');
-      assert.equal(await page.locator('.gallery-count').textContent(), `${i + 1} / 11`);
-      await page.locator('[data-direction="1"]').click();
-      assert.equal(await page.locator('video').nth(i).evaluate(v => v.paused), true);
-    }
+    assert.equal(await page.locator('video').count(), 1);
+    const video = page.locator('.gallery-slide:visible video');
+    await video.evaluate(v => { v.muted = true; v.load(); });
+    await page.waitForFunction(() => document.querySelector('.gallery-slide:not([hidden]) video')?.readyState >= 2);
+    await video.evaluate(v => v.play());
+    await page.waitForFunction(() => document.querySelector('.gallery-slide:not([hidden]) video')?.currentTime > 0);
+    await video.focus();
+    await page.keyboard.press('ArrowRight');
+    assert.equal(await page.locator('.gallery-count').textContent(), '1 / 8');
+    await page.locator('[data-direction="1"]').click();
+    assert.equal(await page.locator('video').first().evaluate(v => v.paused), true);
     await page.locator('.gallery-slide:visible .image-fullscreen').click();
     assert.equal(await page.locator('.image-viewer').isVisible(), true);
     await page.keyboard.press('ArrowLeft');
-    assert.equal(await page.locator('.image-viewer-count').textContent(), '11 / 11');
+    assert.equal(await page.locator('.image-viewer-count').textContent(), '8 / 8');
     await page.keyboard.press('ArrowRight');
-    assert.equal(await page.locator('.image-viewer-count').textContent(), '5 / 11');
+    assert.equal(await page.locator('.image-viewer-count').textContent(), '2 / 8');
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('.gallery-slide:visible .image-fullscreen').evaluate(el => el === document.activeElement), true);
     const image = page.locator('.gallery-slide:visible img');
@@ -111,15 +110,15 @@ test('bracket media starts with manufacturing, pauses hidden videos and wraps fu
       el.dispatchEvent(new TouchEvent('touchstart', { bubbles: true, touches: [touch(240)] }));
       el.dispatchEvent(new TouchEvent('touchend', { bubbles: true, changedTouches: [touch(80)] }));
     });
-    assert.equal(await page.locator('.gallery-count').textContent(), '6 / 11');
+    assert.equal(await page.locator('.gallery-count').textContent(), '3 / 8');
     assert.equal((await page.request.get(`${url}/assets/media/projects/nasa-bracket/Manufacturing_Process.mp4`, { headers: { Range: 'bytes=0-1023' } })).status(), 206);
   }
   assert.deepEqual(errors, []);
   await page.close();
   const fallback = await browser.newPage({ javaScriptEnabled: false });
   await fallback.goto(`${url}/projects/nasa-bracket/`);
-  assert.equal(await fallback.locator('.gallery-slide:visible').count(), 11);
-  assert.equal(await fallback.locator('video[controls]').count(), 4);
+  assert.equal(await fallback.locator('.gallery-slide:visible').count(), 8);
+  assert.equal(await fallback.locator('video[controls]').count(), 1);
   assert.equal(await fallback.locator('.model-poster').isVisible(), true);
   await fallback.close();
 });
